@@ -6,7 +6,28 @@ import 'package:lingua/models/letter.dart';
 
 class LettersController extends ChangeNotifier {
   List<Letter> _letters = [];
-  List<String> _words = [];
+  List<String> _words = [
+    "bathroom",
+    "come",
+    "equality",
+    "far",
+    "farewell",
+    "good",
+    "hello",
+    "i love you",
+    "later",
+    "letter",
+    "like",
+    "no",
+    "ok",
+    "perfect",
+    "question",
+    "sign language",
+    "stare",
+    "stop",
+    "what are you doing",
+    "wow"
+  ];
 
   init() async {
     String lettersJson =
@@ -15,14 +36,6 @@ class LettersController extends ChangeNotifier {
     for (var jt in jsonData) {
       _letters.add(Letter.fromMap(jt));
     }
-    notifyListeners();
-
-    String wordsJson = await rootBundle.loadString("assets/data/words.json");
-    List jsnDt = json.decode(wordsJson);
-    for (var gt in jsnDt) {
-      _words.add(gt);
-    }
-
     notifyListeners();
   }
 

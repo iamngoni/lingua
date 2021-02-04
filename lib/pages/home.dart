@@ -11,7 +11,7 @@ class LinguaHome extends StatefulWidget {
 }
 
 class _LinguaHomeState extends State<LinguaHome> {
-  List<String> _tabs = ["Most used", "Favorite"];
+  List<String> _tabs = ["Test Words", "Favorite"];
   int _index = 0;
   bool _isOpen = false;
   bool shouldPlay = false;
