@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_sequence_animator/image_sequence_animator.dart';
 import 'package:lingua/controllers/LetterController.dart';
 import 'package:lingua/models/letter.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +13,6 @@ class LinguaHome extends StatefulWidget {
 class _LinguaHomeState extends State<LinguaHome> {
   List<String> _tabs = ["Most used", "Favorite"];
   int _index = 0;
-  ImageSequenceAnimatorState offlineImageSequenceAnimator;
   bool _isOpen = false;
   bool shouldPlay = false;
   Letter _ltr;
@@ -24,10 +22,6 @@ class _LinguaHomeState extends State<LinguaHome> {
     setState(() {
       _isOpen = !_isOpen;
     });
-  }
-
-  void onOfflineReadyToPlay(ImageSequenceAnimatorState _imageSequenceAnimator) {
-    offlineImageSequenceAnimator = _imageSequenceAnimator;
   }
 
   @override
