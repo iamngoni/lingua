@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Lingua',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        fontFamily: 'Poppins',
       ),
       home: LinguaHome(),
     );

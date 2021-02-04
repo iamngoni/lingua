@@ -15,8 +15,6 @@ dependencies:
   cupertino_icons: ^1.0.1
   provider:
   shared_preferences:
-  flutter_ffmpeg:
-  image_sequence_animator:
 
 dev_dependencies:
   flutter_test:

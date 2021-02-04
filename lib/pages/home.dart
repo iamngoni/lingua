@@ -12,12 +12,13 @@ class LinguaHome extends StatefulWidget {
 }
 
 class _LinguaHomeState extends State<LinguaHome> {
-  List<String> _tabs = ["Most used", "Favorite", "Sentence"];
+  List<String> _tabs = ["Most used", "Favorite"];
   int _index = 0;
   ImageSequenceAnimatorState offlineImageSequenceAnimator;
   bool _isOpen = false;
   bool shouldPlay = false;
   Letter _ltr;
+  TextEditingController _fieldController = new TextEditingController();
 
   void showUnShowField() {
     setState(() {
@@ -48,6 +49,15 @@ class _LinguaHomeState extends State<LinguaHome> {
     playVideo(images);
   }
 
+  reciteAlphabet() {
+    setState(() {
+      shouldPlay = false;
+    });
+    List<Letter> _letters =
+        Provider.of<LettersController>(context, listen: false).letters;
+    playVideo(_letters);
+  }
+
   Letter getWordImagePath(String character) {
     List<Letter> _letters =
         Provider.of<LettersController>(context, listen: false).letters;
@@ -63,7 +73,7 @@ class _LinguaHomeState extends State<LinguaHome> {
   void playVideo(List<Letter> images) async {
     int index = 0;
     int length = images.length;
-    setState(() {
+    setState(() async {
       _ltr = images[index];
       shouldPlay = true;
     });
@@ -79,6 +89,7 @@ class _LinguaHomeState extends State<LinguaHome> {
       });
       index = index + 1;
     }
+    _fieldController.clear();
   }
 
   @override
@@ -179,6 +190,11 @@ class _LinguaHomeState extends State<LinguaHome> {
                       height: 0,
                       width: 0,
                     ),
+              Positioned(
+                top: 10,
+                left: 20,
+                child: alphabetRecitor(),
+              ),
             ],
           ),
         ),
@@ -197,11 +213,13 @@ class _LinguaHomeState extends State<LinguaHome> {
           color: Colors.white,
         ),
         child: TextField(
+          controller: _fieldController,
           decoration: InputDecoration(
             labelText: "Word",
             border: InputBorder.none,
           ),
-          onSubmitted: (String word) => processWord(word),
+          onSubmitted: (String word) =>
+              processWord(word.replaceAll(new RegExp(r"\s+\b|\b\s"), "")),
         ),
       ),
       elevation: 5.0,
@@ -214,6 +232,19 @@ class _LinguaHomeState extends State<LinguaHome> {
     return SizedBox(
       height: 0,
       width: 0,
+    );
+  }
+
+  Widget alphabetRecitor() {
+    return GestureDetector(
+      onTap: reciteAlphabet,
+      child: Text(
+        "Do The Alphabet  🔠",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+        ),
+      ),
     );
   }
 }
