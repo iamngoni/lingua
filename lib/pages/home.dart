@@ -67,7 +67,7 @@ class _LinguaHomeState extends State<LinguaHome> {
   void playVideo(List<Letter> images) async {
     int index = 0;
     int length = images.length;
-    setState(() async {
+    setState(() {
       _ltr = images[index];
       shouldPlay = true;
     });
@@ -170,6 +170,18 @@ class _LinguaHomeState extends State<LinguaHome> {
                             }).toList(),
                           ),
                         ),
+                        Container(
+                          width: dimensions.width,
+                          child: _index == 0
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: testWords(),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: favoriteWords(),
+                                ),
+                        ),
                       ],
                     ),
                   ),
@@ -212,8 +224,9 @@ class _LinguaHomeState extends State<LinguaHome> {
             labelText: "Word",
             border: InputBorder.none,
           ),
-          onSubmitted: (String word) =>
-              processWord(word.replaceAll(new RegExp(r"\s+\b|\b\s"), "")),
+          onSubmitted: (String word) => processWord(
+            word.replaceAll(new RegExp(r"\s+\b|\b\s"), ""),
+          ),
         ),
       ),
       elevation: 5.0,
@@ -239,6 +252,108 @@ class _LinguaHomeState extends State<LinguaHome> {
           fontSize: 17,
         ),
       ),
+    );
+  }
+
+  Widget testWords() {
+    return Consumer<LettersController>(
+      builder: (context, controller, child) {
+        List<String> words = controller.words;
+        return GridView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            childAspectRatio: 2.0,
+          ),
+          itemCount: words.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                processWord(
+                  words[index].replaceAll(
+                    new RegExp(r"\s+\b|\b\s"),
+                    "",
+                  ),
+                );
+              },
+              onDoubleTap: () {
+                Provider.of<LettersController>(context, listen: false)
+                    .addToFavorites(
+                  words[index],
+                );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 10,
+                margin: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Color(
+                    0xFFF2F3FE,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Text(
+                  words[index],
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget favoriteWords() {
+    return Consumer<LettersController>(
+      builder: (context, controller, child) {
+        return GridView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            childAspectRatio: 2.0,
+          ),
+          itemCount: controller.favorites.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                processWord(
+                  controller.favorites[index].replaceAll(
+                    new RegExp(r"\s+\b|\b\s"),
+                    "",
+                  ),
+                );
+              },
+              onDoubleTap: () {
+                controller.removeFromFavorites(controller.favorites[index]);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                height: 10,
+                margin: EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: Color(
+                    0xFFF2F3FE,
+                  ),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Text(
+                  controller.words[index],
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
